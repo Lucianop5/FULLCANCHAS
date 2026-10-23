@@ -1,0 +1,16 @@
+node_modules
+.next
+.git
+.github
+.env
+.env.*
+!.env.example
+screenshots
+test-results
+playwright-report
+coverage
+*.tsbuildinfo
+AGENTS.md
+README.md
+DESIGN.md
+LICENSE
