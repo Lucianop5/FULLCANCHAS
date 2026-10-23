@@ -38,9 +38,13 @@ Rediseño completo en **Next.js 16 + React 19 + TypeScript**, con interfaz en es
 | --- | --- |
 | ![Reservas](screenshots/10-admin-reservas.png) | ![Landing móvil](screenshots/11-landing-mobile.png) |
 
-| Dashboard — tema oscuro | Perfil — tema oscuro |
+| Dashboard – tema oscuro | Perfil – tema oscuro |
 | --- | --- |
 | ![Dashboard oscuro](screenshots/12-admin-dashboard-dark.png) | ![Perfil oscuro](screenshots/13-profile-dark.png) |
+
+## Imágenes
+
+Las fotografías de canchas son locales y se sirven con `next/image` desde `public/images/canchas/`. Provienen de [Pexels](https://www.pexels.com/) y se distribuyen bajo su licencia de uso gratuito. Autores, fuentes y notas de optimización están en [IMAGE_CREDITS.md](IMAGE_CREDITS.md).
 
 ## Stack
 
@@ -58,7 +62,7 @@ Rediseño completo en **Next.js 16 + React 19 + TypeScript**, con interfaz en es
 
 ### Jugador
 
-- Landing pública con catálogo, precios, cómo funciona y llamado a la acción.
+- Landing pública con catálogo visual, precios, cómo funciona y llamado a la acción.
 - Registro e inicio de sesión con sesión persistente.
 - Reserva en tres pasos: tipo/cancha → fecha y hora → resumen.
 - Disponibilidad real por cancha y día, slots de una hora entre 09:00 y 22:00.
@@ -202,7 +206,7 @@ No se debe versionar `.env.local` ni secretos reales.
 ### Modelo de datos
 
 - `User`, `Session`, `Account`, `Verification`: tablas de Better Auth y rol/estado.
-- `CourtType`: nombre, descripción y `pricePerHour`.
+- `CourtType`: nombre, descripción, `pricePerHour` e `imageUrl` opcional para la fotografía del deporte.
 - `Court`: nombre, dirección, estado y tipo.
 - `Reservation`: usuario, cancha, inicio, estado, precio snapshot, referencia de pago, expiración, notas y `activeSlotKey`.
 
@@ -300,8 +304,11 @@ prisma/
   schema.prisma
   migrations/
   seed.ts
+public/
+  images/canchas/     # fotografías locales optimizadas (WebP)
 e2e/                  # Playwright
 screenshots/          # capturas para documentación
+IMAGE_CREDITS.md      # autores, fuentes y licencia de las imágenes
 ```
 
 ## Decisiones de diseño

@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 
 import { ReservationStatusControl } from "@/components/admin/reservation-status-control";
+import { CourtImage } from "@/components/court-image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -305,12 +306,23 @@ export default async function AdminReservationsPage({
                       </p>
                     </TableCell>
                     <TableCell>
-                      <p className="text-sm font-medium">
-                        {reservation.court.name}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {reservation.court.type.name}
-                      </p>
+                      <div className="flex items-center gap-3">
+                        <span className="relative size-10 shrink-0 overflow-hidden rounded-lg bg-muted">
+                          <CourtImage
+                            src={reservation.court.type.imageUrl}
+                            alt={`Cancha ${reservation.court.name}`}
+                            sizes="40px"
+                          />
+                        </span>
+                        <div>
+                          <p className="text-sm font-medium">
+                            {reservation.court.name}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {reservation.court.type.name}
+                          </p>
+                        </div>
+                      </div>
                     </TableCell>
                     <TableCell>
                       {reservation.user ? (

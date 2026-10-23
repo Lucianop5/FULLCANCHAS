@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { confirmPaymentAction } from "@/server/actions/booking";
+import { CourtImage } from "@/components/court-image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -34,6 +35,7 @@ type CheckoutClientProps = {
   courtName: string;
   courtAddress: string;
   typeName: string;
+  imageUrl: string | null;
   dateLabel: string;
   timeLabel: string;
   amount: number;
@@ -58,6 +60,7 @@ export function CheckoutClient({
   courtName,
   courtAddress,
   typeName,
+  imageUrl,
   dateLabel,
   timeLabel,
   amount,
@@ -144,7 +147,23 @@ export function CheckoutClient({
       </div>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-        <Card className="border-border/80 bg-card/80">
+        <Card className="overflow-hidden border-border/80 bg-card/80">
+          <div className="relative h-44">
+            <CourtImage
+              src={imageUrl}
+              alt={`Cancha ${courtName}`}
+              sizes="(max-width: 1024px) 100vw, 520px"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+            <div className="absolute bottom-4 left-4 right-4">
+              <p className="text-[10px] font-semibold tracking-[0.14em] text-white/70 uppercase">
+                {typeName}
+              </p>
+              <p className="mt-1 font-display text-2xl font-medium tracking-wide text-white uppercase">
+                {courtName}
+              </p>
+            </div>
+          </div>
           <CardHeader>
             <CardTitle className="font-display text-xl font-medium tracking-wide uppercase">
               Resumen de tu reserva
@@ -152,17 +171,11 @@ export function CheckoutClient({
             <CardDescription>Revisa los datos antes de pagar.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-5">
-            <div className="rounded-2xl border border-border bg-muted/30 p-4">
-              <p className="text-[10px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">
-                {typeName}
-              </p>
-              <p className="mt-1 font-display text-2xl font-medium tracking-wide uppercase">
-                {courtName}
-              </p>
-              <p className="mt-1 text-xs text-muted-foreground">{courtAddress}</p>
-            </div>
-
             <div className="space-y-2.5 text-sm">
+              <div className="flex items-center justify-between gap-4">
+                <span className="text-muted-foreground">Ubicación</span>
+                <span className="text-right font-medium">{courtAddress}</span>
+              </div>
               <div className="flex items-center justify-between gap-4">
                 <span className="text-muted-foreground">Fecha</span>
                 <span className="text-right font-medium">{dateLabel}</span>

@@ -10,6 +10,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 
+import { CourtImage } from "@/components/court-image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -68,19 +69,28 @@ export default async function ConfirmationPage({
       </div>
 
       <Card className="mt-8 overflow-hidden border-border/80">
-        <div className="bg-primary px-6 py-5 text-primary-foreground dark:bg-[#12241d] dark:text-white">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="text-[10px] font-semibold tracking-[0.16em] uppercase opacity-60">
-                Comprobante de reserva
-              </p>
-              <p className="mt-1 font-display text-2xl font-medium tracking-wide uppercase">
-                {reservation.court.name}
-              </p>
+        <div className="relative h-48">
+          <CourtImage
+            src={reservation.court.type.imageUrl}
+            alt={`Cancha ${reservation.court.name}`}
+            sizes="(max-width: 768px) 100vw, 768px"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#07110c] via-[#07110c]/35 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 px-6 py-5 text-white">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p className="text-[10px] font-semibold tracking-[0.16em] uppercase opacity-70">
+                  Comprobante de reserva
+                </p>
+                <p className="mt-1 font-display text-2xl font-medium tracking-wide uppercase">
+                  {reservation.court.name}
+                </p>
+              </div>
+              <Badge className="rounded-full border-white/15 bg-white/10 text-white hover:bg-white/10">
+                Pagada
+              </Badge>
             </div>
-            <Badge className="rounded-full border-white/15 bg-white/10 text-white hover:bg-white/10">
-              Pagada
-            </Badge>
           </div>
         </div>
 

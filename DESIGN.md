@@ -64,7 +64,15 @@ En oscuro, el verde primario se transforma en lima para conservar el gesto de ma
 - Ritmo vertical: `space-y-6` / `space-y-7` entre secciones; `gap-4` en grillas de métricas.
 - Radios: `rounded-xl` en controles, `rounded-2xl` en tarjetas, `rounded-full` en CTAs y filtros.
 - Sombras: suaves y localizadas. La jerarquía se construye con bordes y superficies, no con sombras pesadas.
-- Texturas: `.pitch-grid` para la cancha del hero y `.fine-grid` para fondos editoriales. Son decorativas y nunca contienen información.
+- Texturas: `.pitch-grid` en autenticación y `.fine-grid` en fondos editoriales. Son decorativas y nunca contienen información.
+
+## Fotografía
+
+- Las canchas usan fotografías reales, locales y optimizadas en `public/images/canchas/` (WebP, 1600 px de ancho).
+- `next/image` genera variantes responsivas mediante `sizes`; el hero se marca como `priority`.
+- Sobre cada foto se aplica un degradado oscuro para garantizar contraste de badges, precios y titulares.
+- `CourtImage` centraliza el recorte (`object-cover`) y muestra un degradado verde como respaldo si falta `imageUrl`.
+- Los créditos y la licencia viven en [IMAGE_CREDITS.md](IMAGE_CREDITS.md).
 
 ## Componentes
 
@@ -78,12 +86,12 @@ En oscuro, el verde primario se transforma en lima para conservar el gesto de ma
 ### Hero
 
 - Composición asimétrica: mensaje editorial a la izquierda, tarjeta de cancha a la derecha.
-- La tarjeta de cancha usa `.pitch-grid`, una reserva de ejemplo y una etiqueta de “Reserva segura”.
+- La tarjeta de cancha usa una fotografía aérea local, un degradado de contraste, una reserva de ejemplo y una etiqueta de “Reserva segura”.
 - CTA principal lima/verde y CTA secundario outline; en móvil se apilan.
 
 ### Tarjetas y métricas
 
-- Tarjetas de cancha con icono deportivo, nombre en Oswald, descripción y precio.
+- Tarjetas de cancha con fotografía del deporte, badge de superficie, icono deportivo, nombre en Oswald, descripción y precio.
 - Métricas administrativas con icono en bloque de color, cifra display y etiqueta corta.
 - Estados con badges de borde y fondo translúcido; el color nunca es el único indicador (siempre hay texto).
 
@@ -99,6 +107,7 @@ En oscuro, el verde primario se transforma en lima para conservar el gesto de ma
 - Flujo de tres pasos: cancha → horario → resumen.
 - Slots de una hora entre 09:00 y 22:00, con estados disponible, seleccionado y no disponible (tachado).
 - Los botones de selección exponen `aria-pressed`.
+- Resumen, checkout y comprobante con fotografía de la cancha como cabecera y degradado para el texto.
 - Resumen con precio snapshot, fecha larga en español, duración y política de cancelación de 2 horas.
 
 ### Administración
@@ -137,7 +146,10 @@ En oscuro, el verde primario se transforma en lima para conservar el gesto de ma
 
 - `src/app/globals.css`: tokens, tipografía y texturas.
 - `src/app/page.tsx`: landing pública.
+- `src/components/court-image.tsx`: fotografía de cancha con fallback y `next/image`.
 - `src/components/booking/booking-wizard.tsx`: flujo de reserva.
 - `src/components/admin/*`: operación administrativa.
 - `src/app/(admin)/layout.tsx`: shell de administración.
+- `public/images/canchas/`: fotografías locales optimizadas.
 - `screenshots/`: evidencia visual de los temas claro y oscuro.
+- `IMAGE_CREDITS.md`: autores, fuentes y licencia de las fotografías.

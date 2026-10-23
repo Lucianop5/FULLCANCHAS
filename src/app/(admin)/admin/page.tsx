@@ -11,6 +11,7 @@ import {
   Users,
 } from "lucide-react";
 
+import { CourtImage } from "@/components/court-image";
 import { ReservationStatusBadge } from "@/components/reservations/status-badge";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -160,8 +161,12 @@ export default async function AdminDashboardPage() {
                     className="flex flex-wrap items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
                   >
                     <div className="flex min-w-0 items-center gap-3">
-                      <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-muted">
-                        <CalendarDays className="size-4" />
+                      <span className="relative size-10 shrink-0 overflow-hidden rounded-lg bg-muted">
+                        <CourtImage
+                          src={reservation.court.type.imageUrl}
+                          alt={`Cancha ${reservation.court.name}`}
+                          sizes="40px"
+                        />
                       </span>
                       <div className="min-w-0">
                         <p className="truncate text-sm font-medium">

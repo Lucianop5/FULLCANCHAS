@@ -38,6 +38,7 @@ const courtTypes = [
     description:
       "Ideal para partidos amistosos. Iluminación profesional y superficie de última generación.",
     pricePerHour: 30000,
+    imageUrl: "/images/canchas/futbol-7.webp",
     courts: [
       { name: "Sintético 1", address: "Sector A1" },
       { name: "Sintético 2", address: "Sector A2" },
@@ -48,6 +49,7 @@ const courtTypes = [
     description:
       "Campo reglamentario, vestuarios de lujo. Perfecto para torneos.",
     pricePerHour: 50000,
+    imageUrl: "/images/canchas/futbol-11.webp",
     courts: [
       { name: "Estadio 1", address: "Campo Principal" },
       { name: "Estadio 2", address: "Campo Trasero" },
@@ -58,6 +60,7 @@ const courtTypes = [
     description:
       "Cancha indoor con piso pulido. Rápida y técnica, ideal para pases cortos.",
     pricePerHour: 30000,
+    imageUrl: "/images/canchas/futbol-sala.webp",
     courts: [
       { name: "Sala Techada 1", address: "Pabellón Interior" },
       { name: "Sala Techada 2", address: "Pabellón Interior" },
@@ -68,6 +71,7 @@ const courtTypes = [
     description:
       "Pista de cristal de última generación. Ideal para dobles con iluminación nocturna.",
     pricePerHour: 20000,
+    imageUrl: "/images/canchas/padel.webp",
     courts: [
       { name: "Padel Vidrio 1", address: "Pista 1" },
       { name: "Padel Vidrio 2", address: "Pista 2" },
@@ -78,6 +82,7 @@ const courtTypes = [
     description:
       "Piso de goma deportiva antideslizante. Aros profesionales y graderías.",
     pricePerHour: 25000,
+    imageUrl: "/images/canchas/basquetbol.webp",
     courts: [
       { name: "Basket 1", address: "Patio Principal" },
       { name: "Basket 2", address: "Gimnasio" },
@@ -88,6 +93,7 @@ const courtTypes = [
     description:
       "Superficie de alto rendimiento. Incluye arriendo de implementos.",
     pricePerHour: 15000,
+    imageUrl: "/images/canchas/tenis.webp",
     courts: [
       { name: "Arcilla 1", address: "Zona Exteriores" },
       { name: "Arcilla 2", address: "Zona Exteriores" },
@@ -160,11 +166,13 @@ async function main() {
       update: {
         description: type.description,
         pricePerHour: type.pricePerHour,
+        imageUrl: type.imageUrl,
       },
       create: {
         name: type.name,
         description: type.description,
         pricePerHour: type.pricePerHour,
+        imageUrl: type.imageUrl,
       },
     });
 

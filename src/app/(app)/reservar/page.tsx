@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { CalendarClock, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 
 import { BookingWizard } from "@/components/booking/booking-wizard";
+import { CourtImage } from "@/components/court-image";
 import { Badge } from "@/components/ui/badge";
 import { getUpcomingDays, formatDateTime } from "@/lib/booking";
 import { getBookingCatalog, getUpcomingReservation } from "@/server/reservations";
@@ -27,8 +28,12 @@ export default async function BookingPage() {
         <div className="border-b border-border/60 bg-card/60">
           <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
             <div className="flex items-center gap-3">
-              <span className="grid size-9 place-items-center rounded-full bg-accent text-accent-foreground">
-                <CalendarClock className="size-4" />
+              <span className="relative size-10 shrink-0 overflow-hidden rounded-lg bg-muted">
+                <CourtImage
+                  src={upcoming.court.type.imageUrl}
+                  alt={`Cancha ${upcoming.court.name}`}
+                  sizes="40px"
+                />
               </span>
               <div>
                 <p className="text-[10px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">

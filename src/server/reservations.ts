@@ -57,6 +57,7 @@ export async function getBookingCatalog() {
     name: type.name,
     description: type.description,
     pricePerHour: type.pricePerHour,
+    imageUrl: type.imageUrl,
     courts: type.courts.map((court) => ({
       id: court.id,
       name: court.name,
@@ -102,6 +103,7 @@ export async function getAvailability(courtId: string, dateKey: string) {
     courtId: court.id,
     courtName: court.name,
     typeName: court.type.name,
+    imageUrl: court.type.imageUrl,
     address: court.address,
     pricePerHour: court.type.pricePerHour,
     date: dateKey,

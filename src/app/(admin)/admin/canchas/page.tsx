@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 
 import { BlockSlotDialog } from "@/components/admin/block-slot-dialog";
+import { CourtImage } from "@/components/court-image";
 import { CourtDialog } from "@/components/admin/court-dialog";
 import { CourtStatusToggle } from "@/components/admin/court-status-toggle";
 import { CourtTypePriceEditor } from "@/components/admin/court-type-price-editor";
@@ -138,16 +139,22 @@ export default async function AdminCourtsPage() {
         </div>
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {courtTypes.map((type) => (
-            <Card key={type.id} className="border-border/70">
+            <Card key={type.id} className="overflow-hidden border-border/70">
+              <div className="relative h-28">
+                <CourtImage
+                  src={type.imageUrl}
+                  alt={`Cancha de ${type.name}`}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                <Badge className="absolute bottom-3 left-3 rounded-full border-white/20 bg-black/35 text-white backdrop-blur hover:bg-black/35">
+                  {type._count.courts} canchas
+                </Badge>
+              </div>
               <CardHeader className="gap-1">
-                <div className="flex items-start justify-between gap-3">
-                  <CardTitle className="font-display text-lg font-medium tracking-wide uppercase">
-                    {type.name}
-                  </CardTitle>
-                  <Badge variant="secondary" className="rounded-full">
-                    {type._count.courts} canchas
-                  </Badge>
-                </div>
+                <CardTitle className="font-display text-lg font-medium tracking-wide uppercase">
+                  {type.name}
+                </CardTitle>
                 <CardDescription className="line-clamp-2 min-h-10 leading-5">
                   {type.description}
                 </CardDescription>
@@ -191,7 +198,18 @@ export default async function AdminCourtsPage() {
               <TableBody>
                 {courts.map((court) => (
                   <TableRow key={court.id}>
-                    <TableCell className="font-medium">{court.name}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <span className="relative size-10 shrink-0 overflow-hidden rounded-lg bg-muted">
+                          <CourtImage
+                            src={court.type.imageUrl}
+                            alt={`Cancha ${court.name}`}
+                            sizes="40px"
+                          />
+                        </span>
+                        <span className="font-medium">{court.name}</span>
+                      </div>
+                    </TableCell>
                     <TableCell className="max-w-48 truncate text-muted-foreground">
                       {court.type.name}
                     </TableCell>
@@ -270,11 +288,22 @@ export default async function AdminCourtsPage() {
                 <TableBody>
                   {futureBlocks.map((reservation) => (
                     <TableRow key={reservation.id}>
-                      <TableCell className="font-medium">
-                        {reservation.court.name}
-                        <span className="block text-xs font-normal text-muted-foreground">
-                          {reservation.court.type.name}
-                        </span>
+                      <TableCell>
+                        <div className="flex items-center gap-3">
+                          <span className="relative size-10 shrink-0 overflow-hidden rounded-lg bg-muted">
+                            <CourtImage
+                              src={reservation.court.type.imageUrl}
+                              alt={`Cancha ${reservation.court.name}`}
+                              sizes="40px"
+                            />
+                          </span>
+                          <span className="font-medium">
+                            {reservation.court.name}
+                            <span className="block text-xs font-normal text-muted-foreground">
+                              {reservation.court.type.name}
+                            </span>
+                          </span>
+                        </div>
                       </TableCell>
                       <TableCell className="capitalize">
                         {formatShortDate(reservation.startsAt)}

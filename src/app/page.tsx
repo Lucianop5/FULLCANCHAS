@@ -22,6 +22,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import { CourtImage } from "@/components/court-image";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Badge } from "@/components/ui/badge";
@@ -43,6 +44,8 @@ type CourtType = {
   capacity: string;
   icon: LucideIcon;
   tone: string;
+  imageUrl: string;
+  imagePosition?: string;
 };
 
 const courtTypes: CourtType[] = [
@@ -54,6 +57,7 @@ const courtTypes: CourtType[] = [
     capacity: "14 jugadores",
     icon: CircleDot,
     tone: "from-emerald-950 via-emerald-900 to-emerald-800",
+    imageUrl: "/images/canchas/futbol-7.webp",
   },
   {
     name: "Fútbol 11",
@@ -63,6 +67,7 @@ const courtTypes: CourtType[] = [
     capacity: "22 jugadores",
     icon: Trophy,
     tone: "from-lime-950 via-emerald-900 to-teal-800",
+    imageUrl: "/images/canchas/futbol-11.webp",
   },
   {
     name: "Fútbol sala",
@@ -72,6 +77,8 @@ const courtTypes: CourtType[] = [
     capacity: "10 jugadores",
     icon: Zap,
     tone: "from-teal-950 via-cyan-900 to-sky-900",
+    imageUrl: "/images/canchas/futbol-sala.webp",
+    imagePosition: "object-bottom",
   },
   {
     name: "Pádel",
@@ -81,6 +88,7 @@ const courtTypes: CourtType[] = [
     capacity: "4 jugadores",
     icon: Target,
     tone: "from-amber-950 via-orange-900 to-rose-900",
+    imageUrl: "/images/canchas/padel.webp",
   },
   {
     name: "Básquetbol",
@@ -90,6 +98,7 @@ const courtTypes: CourtType[] = [
     capacity: "10 jugadores",
     icon: Dumbbell,
     tone: "from-orange-950 via-red-900 to-rose-950",
+    imageUrl: "/images/canchas/basquetbol.webp",
   },
   {
     name: "Tenis",
@@ -99,6 +108,7 @@ const courtTypes: CourtType[] = [
     capacity: "2–4 jugadores",
     icon: Star,
     tone: "from-stone-950 via-amber-950 to-orange-900",
+    imageUrl: "/images/canchas/tenis.webp",
   },
 ];
 
@@ -220,14 +230,21 @@ export default function HomePage() {
             <div className="relative mx-auto w-full max-w-[500px]">
               <div className="absolute -inset-8 rounded-full bg-accent/15 blur-3xl" />
               <div className="relative rotate-1 rounded-[2rem] border border-white/10 bg-[#12241d] p-3 shadow-2xl shadow-emerald-950/25 transition-transform duration-500 hover:rotate-0">
-                <div className="pitch-grid relative aspect-[4/5] overflow-hidden rounded-[1.4rem]">
-                  <div className="absolute inset-x-5 top-5 bottom-5 rounded-sm border border-white/25" />
-                  <div className="absolute inset-y-5 left-1/2 w-px bg-white/25" />
-                  <div className="absolute top-1/2 left-1/2 size-24 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/25" />
-                  <div className="absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/60" />
-                  <div className="absolute inset-x-[28%] bottom-5 h-10 border-x border-t border-white/25" />
-                  <div className="absolute inset-x-[28%] top-5 h-10 border-x border-b border-white/25" />
-                  <div className="absolute top-4 left-4 rounded-full border border-white/20 bg-black/25 px-3 py-1 text-[10px] font-medium tracking-wide text-white/80 backdrop-blur">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-[1.4rem] bg-[#07110c]">
+                  <CourtImage
+                    src="/images/canchas/hero-cancha.webp"
+                    alt="Vista aérea de una cancha de fútbol en Fullcanchas"
+                    sizes="(max-width: 1024px) 90vw, 500px"
+                    priority
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#07110c] via-[#07110c]/20 to-[#07110c]/10" />
+                  <div className="absolute inset-0 rounded-[1.4rem] ring-1 ring-inset ring-white/10" />
+                  <div className="absolute top-4 left-4 flex items-center gap-2 rounded-full border border-white/20 bg-black/35 px-3 py-1 text-[10px] font-medium tracking-wide text-white/90 backdrop-blur">
+                    <span className="relative flex size-1.5">
+                      <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-75" />
+                      <span className="relative inline-flex size-1.5 rounded-full bg-accent" />
+                    </span>
                     CANCHA 01 · DISPONIBLE
                   </div>
 
@@ -327,17 +344,24 @@ export default function HomePage() {
                     key={court.name}
                     className="group overflow-hidden border-border/80 bg-card/70 py-0 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl hover:shadow-emerald-950/5"
                   >
-                    <div
-                      className={`relative h-32 overflow-hidden bg-gradient-to-br ${court.tone}`}
-                    >
-                      <div className="absolute inset-0 opacity-30 [background-image:radial-gradient(circle_at_1px_1px,white_1px,transparent_0)] [background-size:18px_18px]" />
-                      <Icon className="absolute -right-4 -bottom-5 size-36 text-white/10 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6" />
+                    <div className="relative h-44 overflow-hidden bg-muted">
+                      <CourtImage
+                        src={court.imageUrl}
+                        alt={`Cancha de ${court.name} en Fullcanchas`}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className={`transition-transform duration-700 group-hover:scale-105 ${court.imagePosition ?? ""}`}
+                        fallbackClassName={`bg-gradient-to-br ${court.tone}`}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-black/10" />
                       <div className="absolute top-3 left-3 flex items-center gap-2">
-                        <Badge className="rounded-full border-white/15 bg-white/10 text-white backdrop-blur hover:bg-white/10">
+                        <Badge className="rounded-full border-white/20 bg-black/35 text-white backdrop-blur hover:bg-black/35">
                           {court.surface}
                         </Badge>
                       </div>
-                      <div className="absolute right-3 bottom-3 rounded-full border border-white/15 bg-black/25 px-2.5 py-1 text-[11px] font-medium text-white/90 backdrop-blur">
+                      <span className="absolute top-3 right-3 grid size-8 place-items-center rounded-full border border-white/15 bg-black/30 text-white/80 backdrop-blur">
+                        <Icon className="size-4" />
+                      </span>
+                      <div className="absolute right-3 bottom-3 rounded-full border border-white/15 bg-black/40 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur">
                         {currency.format(court.price)} / hora
                       </div>
                     </div>

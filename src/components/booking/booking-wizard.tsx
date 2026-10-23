@@ -19,12 +19,12 @@ import {
   createPendingReservationAction,
   getAvailabilityAction,
 } from "@/server/actions/booking";
+import { CourtImage } from "@/components/court-image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -42,6 +42,7 @@ type CourtTypeOption = {
   name: string;
   description: string;
   pricePerHour: number;
+  imageUrl: string | null;
   courts: Array<{ id: string; name: string; address: string }>;
 };
 
@@ -64,6 +65,7 @@ type Availability = {
   courtId: string;
   courtName: string;
   typeName: string;
+  imageUrl: string | null;
   address: string;
   pricePerHour: number;
   date: string;
@@ -271,8 +273,15 @@ export function BookingWizard({
                             : "border-border bg-card hover:border-primary/40 hover:bg-muted/40"
                         }`}
                       >
-                        <div className="flex items-start justify-between gap-3">
-                          <div>
+                        <div className="flex items-start gap-3">
+                          <div className="relative size-12 shrink-0 overflow-hidden rounded-xl bg-muted">
+                            <CourtImage
+                              src={type.imageUrl}
+                              alt={`Cancha de ${type.name}`}
+                              sizes="48px"
+                            />
+                          </div>
+                          <div className="min-w-0 flex-1">
                             <p className="font-display text-lg font-medium tracking-wide uppercase">
                               {type.name}
                             </p>
@@ -339,14 +348,23 @@ export function BookingWizard({
                             : "border-border bg-card hover:border-primary/40"
                         }`}
                       >
-                        <div className="min-w-0">
-                          <p className="font-display text-lg font-medium tracking-wide uppercase">
-                            {court.name}
-                          </p>
-                          <p className="mt-1 flex items-center gap-1.5 truncate text-xs text-muted-foreground">
-                            <MapPin className="size-3.5 shrink-0" />
-                            {court.address}
-                          </p>
+                        <div className="flex min-w-0 items-center gap-3">
+                          <div className="relative size-14 shrink-0 overflow-hidden rounded-xl bg-muted">
+                            <CourtImage
+                              src={selectedType?.imageUrl}
+                              alt={`Cancha ${court.name}`}
+                              sizes="56px"
+                            />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="font-display text-lg font-medium tracking-wide uppercase">
+                              {court.name}
+                            </p>
+                            <p className="mt-1 flex items-center gap-1.5 truncate text-xs text-muted-foreground">
+                              <MapPin className="size-3.5 shrink-0" />
+                              {court.address}
+                            </p>
+                          </div>
                         </div>
                         <span
                           className={`grid size-6 shrink-0 place-items-center rounded-full border ${
@@ -542,7 +560,19 @@ export function BookingWizard({
                 </h2>
               </div>
 
-              <Card className="border-border/80">
+              <Card className="overflow-hidden border-border/80">
+                <div className="relative h-40">
+                  <CourtImage
+                    src={availability?.imageUrl ?? selectedType?.imageUrl}
+                    alt={`Cancha ${selectedCourt?.name ?? ""}`}
+                    sizes="(max-width: 1024px) 100vw, 720px"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                  <div className="absolute bottom-3 left-4 flex items-center gap-2 text-[10px] font-semibold tracking-[0.16em] text-white/80 uppercase">
+                    <MapPin className="size-3.5" />
+                    {selectedCourt?.address}
+                  </div>
+                </div>
                 <CardHeader className="gap-1">
                   <div className="flex items-center justify-between">
                     <Badge variant="secondary" className="rounded-full">
@@ -558,10 +588,6 @@ export function BookingWizard({
                   <CardTitle className="font-display text-3xl font-medium tracking-wide uppercase">
                     {selectedCourt?.name}
                   </CardTitle>
-                  <CardDescription className="flex items-center gap-1.5">
-                    <MapPin className="size-3.5" />
-                    {selectedCourt?.address}
-                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <div className="grid gap-3 sm:grid-cols-2">

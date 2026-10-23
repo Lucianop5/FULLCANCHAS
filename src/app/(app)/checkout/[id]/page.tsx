@@ -41,6 +41,7 @@ export default async function CheckoutPage({
       courtName={reservation.court.name}
       courtAddress={reservation.court.address}
       typeName={reservation.court.type.name}
+      imageUrl={reservation.court.type.imageUrl}
       dateLabel={formatLongDate(reservation.startsAt)}
       timeLabel={`${formatTime(reservation.startsAt)} – ${formatTime(
         new Date(reservation.startsAt.getTime() + 60 * 60 * 1000),

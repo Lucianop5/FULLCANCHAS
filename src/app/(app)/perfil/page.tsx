@@ -11,6 +11,7 @@ import {
   Wallet,
 } from "lucide-react";
 
+import { CourtImage } from "@/components/court-image";
 import { CancelReservationButton } from "@/components/reservations/cancel-reservation-button";
 import { ReservationStatusBadge } from "@/components/reservations/status-badge";
 import { ProfileSettings } from "@/components/profile/profile-settings";
@@ -151,23 +152,31 @@ export default async function ProfilePage() {
 
             {nextReservation ? (
               <Card className="overflow-hidden border-border/80">
-                <div className="bg-primary px-5 py-4 text-primary-foreground dark:bg-[#12241d] dark:text-white">
-                  <div className="flex flex-wrap items-start justify-between gap-3">
-                    <div>
-                      <p className="text-[10px] font-semibold tracking-[0.16em] uppercase opacity-60">
-                        Tu próximo partido
-                      </p>
-                      <p className="mt-1 font-display text-2xl font-medium tracking-wide uppercase">
-                        {nextReservation.court.name}
-                      </p>
-                      <p className="text-xs text-primary-foreground/60 dark:text-white/60">
-                        {nextReservation.court.type.name}
-                      </p>
+                <div className="relative h-44">
+                  <CourtImage
+                    src={nextReservation.court.type.imageUrl}
+                    alt={`Cancha ${nextReservation.court.name}`}
+                    sizes="(max-width: 1024px) 100vw, 760px"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 px-5 pb-4 text-white">
+                    <div className="flex flex-wrap items-end justify-between gap-3">
+                      <div>
+                        <p className="text-[10px] font-semibold tracking-[0.16em] uppercase opacity-70">
+                          Tu próximo partido
+                        </p>
+                        <p className="mt-1 font-display text-2xl font-medium tracking-wide uppercase">
+                          {nextReservation.court.name}
+                        </p>
+                        <p className="text-xs text-white/70">
+                          {nextReservation.court.type.name}
+                        </p>
+                      </div>
+                      <ReservationStatusBadge
+                        status={nextReservation.status}
+                        className="border-white/20 bg-white/10 text-white"
+                      />
                     </div>
-                    <ReservationStatusBadge
-                      status={nextReservation.status}
-                      className="border-white/20 bg-white/10 text-white"
-                    />
                   </div>
                 </div>
                 <CardContent className="space-y-4 pt-5">
@@ -248,8 +257,12 @@ export default async function ProfilePage() {
                     className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3"
                   >
                     <div className="flex min-w-0 items-center gap-3">
-                      <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-muted">
-                        <CalendarDays className="size-4" />
+                      <span className="relative size-10 shrink-0 overflow-hidden rounded-lg bg-muted">
+                        <CourtImage
+                          src={reservation.court.type.imageUrl}
+                          alt={`Cancha ${reservation.court.name}`}
+                          sizes="40px"
+                        />
                       </span>
                       <div className="min-w-0">
                         <p className="truncate text-sm font-medium">
@@ -302,13 +315,22 @@ export default async function ProfilePage() {
                       key={reservation.id}
                       className="grid gap-2 px-4 py-3.5 sm:grid-cols-[1.2fr_1fr_0.8fr_0.7fr] sm:items-center sm:gap-4"
                     >
-                      <div className="min-w-0">
-                        <p className="truncate text-sm font-medium">
-                          {reservation.court.name}
-                        </p>
-                        <p className="truncate text-xs text-muted-foreground">
-                          {reservation.court.type.name}
-                        </p>
+                      <div className="flex min-w-0 items-center gap-3">
+                        <span className="relative hidden size-9 shrink-0 overflow-hidden rounded-lg bg-muted sm:block">
+                          <CourtImage
+                            src={reservation.court.type.imageUrl}
+                            alt={`Cancha ${reservation.court.name}`}
+                            sizes="36px"
+                          />
+                        </span>
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-medium">
+                            {reservation.court.name}
+                          </p>
+                          <p className="truncate text-xs text-muted-foreground">
+                            {reservation.court.type.name}
+                          </p>
+                        </div>
                       </div>
                       <div className="text-xs text-muted-foreground">
                         <p className="capitalize">

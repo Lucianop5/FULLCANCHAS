@@ -100,6 +100,7 @@ model CourtType {
   name         String   @unique
   description  String   @db.VarChar(255)
   pricePerHour Int
+  imageUrl     String?  @db.VarChar(255)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
