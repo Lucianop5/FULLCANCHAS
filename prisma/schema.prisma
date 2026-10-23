@@ -1,0 +1,154 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  DISABLED
+}
+
+enum CourtStatus {
+  ACTIVE
+  MAINTENANCE
+}
+
+enum ReservationStatus {
+  PENDING
+  PAID
+  CANCELLED
+  BLOCKED
+}
+
+model User {
+  id            String     @id @default(cuid())
+  name          String
+  email         String     @unique
+  emailVerified Boolean    @default(false)
+  image         String?
+  role          String     @default("user")
+  status        UserStatus @default(ACTIVE)
+  banned        Boolean    @default(false)
+  banReason     String?
+  banExpires    DateTime?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  sessions            Session[]
+  accounts            Account[]
+  reservations        Reservation[] @relation("UserReservations")
+  createdReservations Reservation[] @relation("CreatedReservations")
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress      String?
+  userAgent      String?
+  impersonatedBy String?
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?   @db.Text
+  refreshToken          String?   @db.Text
+  idToken               String?   @db.Text
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+model CourtType {
+  id           String   @id @default(cuid())
+  name         String   @unique
+  description  String   @db.VarChar(255)
+  pricePerHour Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  courts Court[]
+
+  @@map("court_type")
+}
+
+model Court {
+  id        String      @id @default(cuid())
+  name      String
+  address   String      @default("Av. Club Deportivo 123, Santiago")
+  status    CourtStatus @default(ACTIVE)
+  typeId    String
+  type      CourtType   @relation(fields: [typeId], references: [id], onDelete: Restrict)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  reservations Reservation[]
+
+  @@unique([name, typeId])
+  @@index([typeId])
+  @@index([status])
+  @@map("court")
+}
+
+model Reservation {
+  id             String            @id @default(cuid())
+  userId         String?
+  user           User?             @relation("UserReservations", fields: [userId], references: [id], onDelete: SetNull)
+  courtId        String
+  court          Court             @relation(fields: [courtId], references: [id], onDelete: Restrict)
+  startsAt       DateTime
+  status         ReservationStatus @default(PENDING)
+  priceAtBooking   Int
+  activeSlotKey    String?           @unique
+  paymentReference String?
+  paidAt           DateTime?
+  notes            String?
+  createdById      String?
+  createdBy        User?             @relation("CreatedReservations", fields: [createdById], references: [id], onDelete: SetNull)
+  expiresAt        DateTime?
+  cancelledAt      DateTime?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  @@index([courtId, startsAt])
+  @@index([userId])
+  @@index([status])
+  @@index([startsAt])
+  @@map("reservation")
+}
