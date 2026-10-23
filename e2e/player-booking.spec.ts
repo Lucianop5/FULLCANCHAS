@@ -41,7 +41,9 @@ test("a player can register, book, pay and cancel a reservation", async ({
 
   await page.getByRole("button", { name: /Ir a pagar/ }).click();
   await expect(page).toHaveURL(/\/checkout\//);
-  await expect(page.getByText("Confirma tu reserva.")).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Confirma tu reserva." }),
+  ).toBeVisible();
 
   await page.getByRole("button", { name: /^Pagar \$/ }).click();
   await expect(page).toHaveURL(/\/confirmacion$/);
