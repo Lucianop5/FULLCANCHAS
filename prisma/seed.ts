@@ -112,6 +112,7 @@ async function upsertUser({
   password: string;
   role: "user" | "admin";
 }) {
+  const passwordHash = await hashPassword(password);
   const existing = await prisma.user.findUnique({ where: { email } });
 
   if (existing) {
@@ -119,11 +120,32 @@ async function upsertUser({
       where: { id: existing.id },
       data: { name, role, status: "ACTIVE", emailVerified: true, banned: false },
     });
+
+    const credentialAccount = await prisma.account.findFirst({
+      where: { userId: existing.id, providerId: "credential" },
+    });
+
+    if (credentialAccount) {
+      await prisma.account.update({
+        where: { id: credentialAccount.id },
+        data: { password: passwordHash },
+      });
+    } else {
+      await prisma.account.create({
+        data: {
+          id: randomUUID(),
+          accountId: existing.id,
+          providerId: "credential",
+          userId: existing.id,
+          password: passwordHash,
+        },
+      });
+    }
+
     return existing;
   }
 
   const userId = randomUUID();
-  const passwordHash = await hashPassword(password);
 
   return prisma.user.create({
     data: {
