@@ -5,6 +5,11 @@ import { admin } from "better-auth/plugins";
 
 import { prisma } from "@/server/db";
 
+const localDevelopmentOrigins =
+  process.env.NODE_ENV === "development"
+    ? ["http://localhost:*", "http://127.0.0.1:*"]
+    : [];
+
 export const auth = betterAuth({
   appName: "Fullcanchas",
   baseURL: process.env.BETTER_AUTH_URL ?? "http://localhost:3000",
@@ -12,7 +17,10 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "mysql",
   }),
-  trustedOrigins: [process.env.BETTER_AUTH_URL ?? "http://localhost:3000"],
+  trustedOrigins: [
+    process.env.BETTER_AUTH_URL ?? "http://localhost:3000",
+    ...localDevelopmentOrigins,
+  ],
   emailAndPassword: {
     enabled: true,
     minPasswordLength: 8,
